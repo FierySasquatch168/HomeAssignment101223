@@ -72,10 +72,22 @@ private extension ViewModel {
 // MARK: - Ext Paging protocol
 extension ViewModel: PagingProtocol {
     func updateNextPageIfNeeded(forRowAt indexPath: IndexPath?) {
-        let startIndex = locations.value.count
-        let nextPageItems = dataManager.getNextPageItems(startIndex: startIndex, itemsPerPage: itemsPerPage)
+        let nextPageItems = nextPageItems()
         guard !nextPageItems.isEmpty else { return }
-        locations.send(locations.value + nextPageItems)
+        if isReadyToSendNew(forRowAt: indexPath) { locations.send(locations.value + nextPageItems) }
+    }
+    
+    private func nextPageItems() -> [LocationVisibleModel] {
+        let startIndex = locations.value.count
+        return dataManager.getNextPageItems(startIndex: startIndex, itemsPerPage: itemsPerPage)
+    }
+    
+    private func isReadyToSendNew(forRowAt indexPath: IndexPath?) -> Bool {
+        guard let indexPath else {
+            return true
+        }
+        
+        return indexPath.row == locations.value.count - 1
     }
 }
 

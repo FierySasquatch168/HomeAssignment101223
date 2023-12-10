@@ -30,7 +30,8 @@ enum EndPointValue {
     var stringValue: String {
         switch self {
         case .main:
-            return "https://data.gov.il/api/3/action/datastore_search?resource_id=8f714b6f-c35c-4b40-a0e7-547b675eee0e&limit=30"
+            // &limit=30
+            return "https://data.gov.il/api/3/action/datastore_search?resource_id=8f714b6f-c35c-4b40-a0e7-547b675eee0e"
         case .image:
             return "https://picsum.photos/500/250"
         }
