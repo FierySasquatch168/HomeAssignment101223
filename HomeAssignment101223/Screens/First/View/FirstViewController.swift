@@ -37,8 +37,18 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
-        bind()
         dataSource.createDataSource(for: tableView, with: viewModel.locations.value)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        cancellables.forEach({ $0.cancel() })
+        cancellables.removeAll()
     }
 }
 

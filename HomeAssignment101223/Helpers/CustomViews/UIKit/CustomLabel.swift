@@ -7,16 +7,12 @@
 
 import UIKit
 
-enum LabelAppearence {
-    case black
-    case pink
-}
-
 final class CustomLabel: UILabel {
-    init(appearence: LabelAppearence) {
+
+    init(textColor: UIColor?) {
         super.init(frame: .zero)
         setupBasics()
-        updateAppearence(new: appearence)
+        updateColor(new: textColor)
     }
     
     required init?(coder: NSCoder) {
@@ -35,12 +31,7 @@ private extension CustomLabel {
 
 // MARK: - Ext Appearence
 extension CustomLabel {
-    func updateAppearence(new appearence: LabelAppearence) {
-        switch appearence {
-        case .black:
-            textColor = .black
-        case .pink:
-            textColor = .systemPink
-        }
+    func updateColor(new color: UIColor?) {
+       textColor = color
     }
 }

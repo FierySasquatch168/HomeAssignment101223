@@ -11,6 +11,15 @@ import Combine
 final class CustomTableViewCell: UITableViewCell {
     private lazy var cancellables = Set<AnyCancellable>()
     
+    private var cellState: CellStateEnum? {
+        didSet {
+            cityNameLabel.updateColor(new: cellState?.stateObject.textColor)
+            cityNameInEnglishLabel.updateColor(new: cellState?.stateObject.textColor)
+            regionLabel.updateColor(new: cellState?.stateObject.textColor)
+            backgroundColor = cellState?.stateObject.backgroundColor
+        }
+    }
+    
     var viewModel: CellViewModel? {
         didSet {
             viewModel?.$cellModel
@@ -21,9 +30,10 @@ final class CustomTableViewCell: UITableViewCell {
         }
     }
     
-    private lazy var cityNameLabel = CustomLabel(appearence: .black)
-    private lazy var cityNameInEnglishLabel = CustomLabel(appearence: .black)
-    private lazy var regionLabel = CustomLabel(appearence: .black)
+    private lazy var cityNameLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
+    private lazy var cityNameInEnglishLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
+    private lazy var regionLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
+    
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -50,12 +60,14 @@ final class CustomTableViewCell: UITableViewCell {
     private func updateCell(location: LocationVisibleModel) {
         updateLabels(location: location)
         updateBackground(backgroundImageUrl: location.imageURL)
-        updateColors(location: location)
+        updateCellState(model: location)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.viewModel = nil
+        self.cellState = nil
+        self.backgroundImageView.image = nil
     }
 }
 
@@ -68,25 +80,17 @@ private extension CustomTableViewCell {
     }
     
     func updateBackground(backgroundImageUrl: URL?) {
-        DispatchQueue.main.async { [weak self] in
-            self?.backgroundImageView.setImage(from: backgroundImageUrl)
+        backgroundImageView.setImage(from: backgroundImageUrl)
+    }
+    
+    func updateCellState(model: LocationVisibleModel) {
+        if model.isLiked && model.imageURL == nil {
+            cellState = .likedWithoutBackground
+        } else if model.isLiked && model.imageURL != nil {
+            cellState = .likedWithBackground
+        } else {
+            cellState = .ordinary
         }
-    }
-    
-    func updateColors(location: LocationVisibleModel) {
-        updateLabels(model: location)
-        updateBackground(model: location)
-    }
-    
-    func updateLabels(model: LocationVisibleModel) {
-        let appearence: LabelAppearence = model.isLiked && model.imageURL == nil ? .pink : .black
-        mainStackView.arrangedSubviews
-            .compactMap({ $0 as? CustomLabel})
-            .forEach({ $0.updateAppearence(new: appearence) })
-    }
-    
-    func updateBackground(model: LocationVisibleModel) {
-        backgroundColor = model.isLiked && model.imageURL == nil ? .systemPink : .clear
     }
 }
 
