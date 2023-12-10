@@ -9,16 +9,16 @@ import Foundation
 
 protocol DataStoreProtocol {
     func getItems() -> [LocationVisibleModel]
-    func getItemsCount() -> Int
     func storeData(model: [LocationVisibleModel])
+    func toggleLike(for model: LocationVisibleModel)
 }
 
-final class DataStore: DataStoreProtocol{
+final class DataStore{
     private lazy var locationsStore: [LocationVisibleModel] = []
 }
 
 // MARK: - Ext DataStoreProtocol
-extension DataStore {
+extension DataStore: DataStoreProtocol {
     func getItems() -> [LocationVisibleModel] {
         return locationsStore
     }
@@ -27,7 +27,9 @@ extension DataStore {
         self.locationsStore = model
     }
     
-    func getItemsCount() -> Int {
-        return locationsStore.count
+    func toggleLike(for model: LocationVisibleModel) {
+        if let index = locationsStore.firstIndex(where: { $0.id == model.id }) {
+            locationsStore[index].toggleLike()
+        }
     }
 }

@@ -54,6 +54,38 @@ private extension CustomTableViewCell {
             self?.backgroundImageView.setImage(from: backgroundImageUrl)
         }
     }
+    
+    func updateColors(location: LocationVisibleModel) {
+        let defaultBackgroundColor: UIColor = .clear
+        let defaultTextColor: UIColor = .black
+        let likedBackgroundColor: UIColor = .systemPink
+        let likedTextColor: UIColor = .systemPink
+        
+        backgroundColor = location.isLiked ? likedBackgroundColor : defaultBackgroundColor
+        
+        updateLabelColors(location.isLiked ? likedTextColor : defaultTextColor)
+        updateLabelBackgroundColors(textColor)
+    }
+    
+    func updateLabelColors(_ textColor: UIColor) {
+        cityNameLabel.textColor = textColor
+        cityNameInEnglishLabel.textColor = textColor
+        regionLabel.textColor = textColor
+    }
+    
+    func updateLabelBackgroundColors(location: LocationVisibleModel, textColor: UIColor) {
+        if let backgroundImageUrl = location?.imageURL {
+            // If there is a background image, set text color to pink
+            cityNameLabel.textColor = textColor
+            cityNameInEnglishLabel.textColor = textColor
+            regionLabel.textColor = textColor
+        } else {
+            // If there is no background image, set background to pink
+            cityNameLabel.backgroundColor = textColor
+            cityNameInEnglishLabel.backgroundColor = textColor
+            regionLabel.backgroundColor = textColor
+        }
+    }
 }
 
 // MARK: - Ext constraints

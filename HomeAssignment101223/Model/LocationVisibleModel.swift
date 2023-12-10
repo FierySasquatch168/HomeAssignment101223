@@ -8,15 +8,22 @@
 import Foundation
 
 struct LocationVisibleModel {
+    let id = UUID().uuidString
     let hebrewName: String
     let englishName: String
     let region: String
     let imageURL: URL?
+    var isLiked: Bool
     
     init(location: Location, urlForImage: URL?) {
         self.hebrewName = location.hebrewName
         self.englishName = location.englishName
         self.region = location.region
         self.imageURL = urlForImage
+        self.isLiked = false
+    }
+    
+    mutating func toggleLike() {
+        self.isLiked.toggle()
     }
 }
