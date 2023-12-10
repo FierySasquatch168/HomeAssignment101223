@@ -9,30 +9,17 @@ import UIKit
 import Combine
 
 final class CustomTableViewCell: UITableViewCell {
-    private lazy var cancellables = Set<AnyCancellable>()
-    
-    private var cellState: CellStateEnum? {
-        didSet {
-            cityNameLabel.updateColor(new: cellState?.stateObject.textColor)
-            cityNameInEnglishLabel.updateColor(new: cellState?.stateObject.textColor)
-            regionLabel.updateColor(new: cellState?.stateObject.textColor)
-            backgroundColor = cellState?.stateObject.backgroundColor
-        }
-    }
-    
     var viewModel: CellViewModel? {
         didSet {
-            viewModel?.$cellModel
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { [weak self] model in
-                    self?.updateCell(location: model)
-                }).store(in: &cancellables)
+            guard let viewModel else { return }
+            updateCellBasics(location: viewModel.cellModel)
+            updateColors(cellState: viewModel.cellState)
         }
     }
     
-    private lazy var cityNameLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
-    private lazy var cityNameInEnglishLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
-    private lazy var regionLabel = CustomLabel(textColor: cellState?.stateObject.textColor)
+    private lazy var cityNameLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
+    private lazy var cityNameInEnglishLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
+    private lazy var regionLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
     
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
@@ -57,22 +44,20 @@ final class CustomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func updateCell(location: LocationVisibleModel) {
-        updateLabels(location: location)
-        updateBackground(backgroundImageUrl: location.imageURL)
-        updateCellState(model: location)
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         self.viewModel = nil
-        self.cellState = nil
         self.backgroundImageView.image = nil
     }
 }
 
-// MARK: - Ext UI
+// MARK: - Ext UI Basic
 private extension CustomTableViewCell {
+    private func updateCellBasics(location: LocationVisibleModel) {
+        updateLabels(location: location)
+        updateBackground(backgroundImageUrl: location.imageURL)
+    }
+    
     func updateLabels(location: LocationVisibleModel) {
         cityNameLabel.text = location.hebrewName
         cityNameInEnglishLabel.text = location.englishName
@@ -82,15 +67,15 @@ private extension CustomTableViewCell {
     func updateBackground(backgroundImageUrl: URL?) {
         backgroundImageView.setImage(from: backgroundImageUrl)
     }
-    
-    func updateCellState(model: LocationVisibleModel) {
-        if model.isLiked && model.imageURL == nil {
-            cellState = .likedWithoutBackground
-        } else if model.isLiked && model.imageURL != nil {
-            cellState = .likedWithBackground
-        } else {
-            cellState = .ordinary
-        }
+}
+
+// MARK: - Ext UI State
+private extension CustomTableViewCell {
+    func updateColors(cellState: CellStateEnum?) {
+        cityNameLabel.updateColor(new: cellState?.stateObject.textColor)
+        cityNameInEnglishLabel.updateColor(new: cellState?.stateObject.textColor)
+        regionLabel.updateColor(new: cellState?.stateObject.textColor)
+        backgroundColor = cellState?.stateObject.backgroundColor
     }
 }
 
