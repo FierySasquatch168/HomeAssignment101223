@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LocationVisibleModel {
+struct LocationVisibleModel: Hashable {
     let id = UUID().uuidString
     let hebrewName: String
     let englishName: String

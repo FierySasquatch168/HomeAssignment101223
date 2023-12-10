@@ -6,8 +6,21 @@
 //
 
 import UIKit
+import Combine
 
 final class CustomTableViewCell: UITableViewCell {
+    private lazy var cancellables = Set<AnyCancellable>()
+    
+    var viewModel: CellViewModel? {
+        didSet {
+            viewModel?.$cellModel
+                .receive(on: DispatchQueue.main)
+                .sink(receiveValue: { [weak self] model in
+                    self?.updateCell(location: model)
+                }).store(in: &cancellables)
+        }
+    }
+    
     private lazy var cityNameLabel = CustomLabel(appearence: .black)
     private lazy var cityNameInEnglishLabel = CustomLabel(appearence: .black)
     private lazy var regionLabel = CustomLabel(appearence: .black)
@@ -27,7 +40,6 @@ final class CustomTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupConstraints()
     }
     
@@ -35,10 +47,15 @@ final class CustomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateCell(location: LocationVisibleModel) {
+    private func updateCell(location: LocationVisibleModel) {
         updateLabels(location: location)
         updateBackground(backgroundImageUrl: location.imageURL)
         updateColors(location: location)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.viewModel = nil
     }
 }
 

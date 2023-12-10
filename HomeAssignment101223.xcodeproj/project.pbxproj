@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37284F0A2B25FD2A00512CAD /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F092B25FD2A00512CAD /* CellViewModel.swift */; };
+		37284F0D2B26003B00512CAD /* DataSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F0C2B26003B00512CAD /* DataSourceManager.swift */; };
 		378113412B25BCED00D31BC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113402B25BCED00D31BC2 /* AppDelegate.swift */; };
 		378113432B25BCED00D31BC2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113422B25BCED00D31BC2 /* SceneDelegate.swift */; };
 		378113452B25BCED00D31BC2 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113442B25BCED00D31BC2 /* FirstViewController.swift */; };
@@ -39,6 +41,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37284F092B25FD2A00512CAD /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
+		37284F0C2B26003B00512CAD /* DataSourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceManager.swift; sourceTree = "<group>"; };
 		3781133D2B25BCED00D31BC2 /* HomeAssignment101223.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeAssignment101223.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		378113402B25BCED00D31BC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		378113422B25BCED00D31BC2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +87,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37284F0B2B26003100512CAD /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				37284F0C2B26003B00512CAD /* DataSourceManager.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		378113342B25BCED00D31BC2 = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +156,7 @@
 		3781135A2B25BDA500D31BC2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				37284F0B2B26003100512CAD /* DataSource */,
 				3781139E2B25EB0E00D31BC2 /* DataStore */,
 				378113992B25E28B00D31BC2 /* Factory */,
 				378113982B25E28200D31BC2 /* Network */,
@@ -227,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				378113582B25BD9900D31BC2 /* ViewModel.swift */,
+				37284F092B25FD2A00512CAD /* CellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -378,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37284F0D2B26003B00512CAD /* DataSourceManager.swift in Sources */,
 				378113632B25BEE200D31BC2 /* SecondView.swift in Sources */,
 				378113842B25DC1300D31BC2 /* HeartButton.swift in Sources */,
 				3781137E2B25C82600D31BC2 /* CustomLabel.swift in Sources */,
@@ -388,6 +403,7 @@
 				378113602B25BE2900D31BC2 /* NetworkError.swift in Sources */,
 				378113712B25C22E00D31BC2 /* NetworkManager.swift in Sources */,
 				378113932B25E04800D31BC2 /* Presentable.swift in Sources */,
+				37284F0A2B25FD2A00512CAD /* CellViewModel.swift in Sources */,
 				3781138A2B25DC7500D31BC2 /* LocationViewModel.swift in Sources */,
 				378113A22B25EC5200D31BC2 /* DataManager.swift in Sources */,
 				378113912B25E02C00D31BC2 /* Router.swift in Sources */,

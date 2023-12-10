@@ -17,12 +17,15 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     
     private lazy var cancellables = Set<AnyCancellable>()
     
-    private lazy var tableView = CustomTableView(dataSource: self, delegate: self)
+    private lazy var tableView = CustomTableView(delegate: self)
     
     private let viewModel: ViewModelProtocol & PagingProtocol
+    private let dataSource: TableDataSourceProtocol
     // MARK: Init
-    init(viewModel: ViewModelProtocol & PagingProtocol) {
+    init(viewModel: ViewModelProtocol & PagingProtocol,
+         dataSource: TableDataSourceProtocol) {
         self.viewModel = viewModel
+        self.dataSource = dataSource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,18 +37,12 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        dataSource.createDataSource(for: tableView, with: viewModel.locations.value)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         bind()
-        tableView.reloadData()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        cancellables.forEach({ $0.cancel() })
-        cancellables.removeAll()
     }
 }
 
@@ -55,23 +52,8 @@ private extension FirstViewController {
         viewModel.locations
             .receive(on: DispatchQueue.main)
             .sink { [weak self] locations in
-                self?.tableView.reloadData()
+                self?.dataSource.updateTableView(with: locations)
             }.store(in: &cancellables)
-    }
-}
-
-// MARK: - Ext UITableViewDataSource
-extension FirstViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.locations.value.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseIdentifier,
-                                                     for: indexPath) as? CustomTableViewCell
-        else { return CustomTableViewCell() }
-        cell.updateCell(location: viewModel.locations.value[indexPath.row])
-        return cell
     }
 }
 

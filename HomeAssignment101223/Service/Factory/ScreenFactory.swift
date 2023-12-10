@@ -10,7 +10,9 @@ import SwiftUI
 
 protocol ScreenFactoryProtocol {
     func createNavigationController(root: Presentable) -> UIViewController
-    func createFirstScreen(dataManager: DataManagerProtocol) -> Presentable & NavigationProtocol
+    func createFirstScreen(dataManager: DataManagerProtocol,
+                           networkManager: LocationManager,
+                           dataSource: TableDataSourceProtocol) -> Presentable & NavigationProtocol
     func createSecondScreen(model: LocationVisibleModel, dataManager: DataManagerProtocol) -> UIViewController
 }
 
@@ -20,11 +22,11 @@ final class ScreenFactory: ScreenFactoryProtocol {
         return UINavigationController(rootViewController: vc)
     }
     
-    func createFirstScreen(dataManager: DataManagerProtocol) -> Presentable & NavigationProtocol {
-        let networkService = BasicNetworkService()
-        let networkManager = NetworkManager(networkService: networkService)
+    func createFirstScreen(dataManager: DataManagerProtocol,
+                           networkManager: LocationManager,
+                           dataSource: TableDataSourceProtocol) -> Presentable & NavigationProtocol {
         let viewModel = ViewModel(networkService: networkManager, dataManager: dataManager)
-        return FirstViewController(viewModel: viewModel)
+        return FirstViewController(viewModel: viewModel, dataSource: dataSource)
     }
     
     func createSecondScreen(model: LocationVisibleModel, dataManager: DataManagerProtocol) -> UIViewController {

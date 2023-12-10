@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SecondView: View {
-    @ObservedObject var viewModel: LocationViewModel
+    @Binding var viewModel: LocationViewModel
     
     var body: some View {
         VStack {
@@ -44,14 +44,14 @@ struct SecondView: View {
     }
 }
 
-#Preview {
-    SecondView(
-        viewModel: .init(locationModel: LocationVisibleModel(
-            location: Location(
-                hebrewName: "לא רשום",
-                englishName: "Mock city",
-                region: "לא ידוע",
-                regionalCouncil: nil),
-                urlForImage: nil),
-        dataManager: DataManager(dataStore: DataStore())))
-}
+//#Preview {
+//    SecondView(
+//        viewModel: .init(locationModel: LocationVisibleModel(
+//            location: Location(
+//                hebrewName: "לא רשום",
+//                englishName: "Mock city",
+//                region: "לא ידוע",
+//                regionalCouncil: nil),
+//                urlForImage: nil),
+//        dataManager: DataManager(dataStore: DataStore())))
+//}

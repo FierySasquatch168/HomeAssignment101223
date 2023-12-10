@@ -8,10 +8,10 @@
 import UIKit
 
 final class CustomTableView: UITableView {
-    init(dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+    init(delegate: UITableViewDelegate) {
         super.init(frame: .zero, style: .plain)
         register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
-        self.dataSource = dataSource
+//        self.dataSource = dataSource
         self.delegate = delegate
     }
     
