@@ -10,8 +10,6 @@ import Foundation
 protocol DataManagerProtocol {
     func store(_ model: [LocationVisibleModel])
     func getNextPageItems(startIndex: Int, itemsPerPage: Int) -> [LocationVisibleModel]
-//    func getFirstPageItems(itemsPerPage: Int) -> [LocationVisibleModel]
-//    func calculateNextPageItems(startIndex: Int, itemsPerPage: Int) -> [LocationVisibleModel]
 }
 
 final class DataManager: DataManagerProtocol {
@@ -30,21 +28,6 @@ final class DataManager: DataManagerProtocol {
         let endIndex = min(startIndex + itemsPerPage, storedValues.count)
         return Array(storedValues[startIndex..<endIndex])
     }
-    
-//    func getFirstPageItems(itemsPerPage: Int) -> [LocationVisibleModel] {
-//        let storedValues = getItems()
-//        return Array(
-//            storedValues
-//            .dropFirst(storedValues.count)
-//            .prefix(itemsPerPage)
-//        )
-//    }
-//    
-//    func calculateNextPageItems(startIndex: Int, itemsPerPage: Int) -> [LocationVisibleModel] {
-//        let storedValues = getItems()
-//        let endIndex = min(startIndex + itemsPerPage, storedValues.count)
-//        return Array(storedValues[startIndex..<endIndex])
-//    }
 }
 
 private extension DataManager {

@@ -32,7 +32,7 @@ final class FlowCoordinator: CoordinatorProtocol {
 
 private extension FlowCoordinator {
     func showMainScreen() {
-        var screen = screenFactory.createFirstScreen()
+        var screen = screenFactory.createFirstScreen(dataManager: dataManager)
         let navController = screenFactory.createNavigationController(root: screen)
         
         screen.onPush = { [weak self] model in

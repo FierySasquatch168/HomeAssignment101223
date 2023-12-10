@@ -12,8 +12,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var screenFactory = ScreenFactory()
+    private lazy var datastore = DataStore()
+    private lazy var dataManager = DataManager(dataStore: datastore)
     private lazy var router: Routable = Router(routerDelegate: self)
-    private lazy var flowCoordinator = FlowCoordinator(router: router, screenFactory: screenFactory)
+    private lazy var flowCoordinator = FlowCoordinator(router: router, screenFactory: screenFactory, dataManager: dataManager)
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
