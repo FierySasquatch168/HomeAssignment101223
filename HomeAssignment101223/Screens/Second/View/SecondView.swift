@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SecondView: View {
-    @Binding var viewModel: LocationViewModel
+    @ObservedObject var viewModel: LocationViewModel
     
     var body: some View {
         VStack {
@@ -22,7 +22,7 @@ struct SecondView: View {
             .padding([.top, .leading, .trailing], 40)
             // Region
             Text(viewModel.locationModel.region)
-                .font(.headline)
+                .font(.title)
                 .padding([.leading, .trailing])
             Spacer().frame(height: 100)
             // Heart button
@@ -37,10 +37,7 @@ struct SecondView: View {
             .padding()
         }
         .padding([.top, .leading, .trailing], 20)
-        .background(viewModel.isLiked ? Color.pink : Color.white)
-        .onTapGesture {
-            viewModel.toggleLike()
-        }
+        .background(viewModel.isLiked ? Color.pink : Color.red)
     }
 }
 

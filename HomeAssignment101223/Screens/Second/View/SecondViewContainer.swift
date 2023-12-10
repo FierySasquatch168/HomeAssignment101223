@@ -11,7 +11,7 @@ struct SecondViewContainer: UIViewControllerRepresentable {
     @Binding var locationViewModel: LocationViewModel
 
     func makeUIViewController(context: Context) -> UIHostingController<SecondView> {
-        return UIHostingController(rootView: SecondView(viewModel: $locationViewModel))
+        return UIHostingController(rootView: SecondView(viewModel: locationViewModel))
     }
 
     func updateUIViewController(_ uiViewController: UIHostingController<SecondView>, context: Context) {

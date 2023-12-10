@@ -11,6 +11,7 @@ protocol DataManagerProtocol {
     func store(_ model: [LocationVisibleModel])
     func getNextPageItems(startIndex: Int, itemsPerPage: Int) -> [LocationVisibleModel]
     func toggleLike(for model: LocationVisibleModel)
+    func isLocationLiked(_ model: LocationVisibleModel) -> Bool
 }
 
 final class DataManager {
@@ -35,5 +36,10 @@ extension DataManager: DataManagerProtocol {
     
     func toggleLike(for model: LocationVisibleModel) {
         dataStore.toggleLike(for: model)
+    }
+    
+    func isLocationLiked(_ model: LocationVisibleModel) -> Bool {
+        let storedValues = dataStore.getItems()
+        return storedValues.first(where: { $0.id == model.id })?.isLiked ?? false
     }
 }

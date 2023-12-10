@@ -37,12 +37,8 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
-        dataSource.createDataSource(for: tableView, with: viewModel.locations.value)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         bind()
+        dataSource.createDataSource(for: tableView, with: viewModel.locations.value)
     }
 }
 
