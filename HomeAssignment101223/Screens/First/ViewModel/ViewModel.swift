@@ -13,19 +13,22 @@ protocol ViewModelProtocol {
 }
 
 protocol PagingProtocol {
-    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath)
+    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath?)
 }
 
 final class ViewModel: ViewModelProtocol {
     var locations = CurrentValueSubject<[LocationVisibleModel], Never>([])
     
-    private lazy var locationsStore: [LocationVisibleModel] = []
     private lazy var itemsPerPage = 10
     
     private let networkService: LocationManager
+    private let dataManager: DataManagerProtocol
+    
     // MARK: Init
-    init(networkService: LocationManager) {
+    init(networkService: LocationManager,
+         dataManager: DataManagerProtocol) {
         self.networkService = networkService
+        self.dataManager = dataManager
         getLocations()
     }
 }
@@ -37,7 +40,7 @@ private extension ViewModel {
             do {
                 let response = try await networkService.getLocations()
                 handleResponse(response)
-                locations.send(getFirstPageItems())
+                updateNextPageIfNeeded(forRowAt: nil)
             } catch {
                 print("error caught: \(error)")
             }
@@ -47,12 +50,17 @@ private extension ViewModel {
 
 // MARK: - Ext Paging protocol
 extension ViewModel: PagingProtocol {
-    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath) {
+    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath?) {
         let startIndex = locations.value.count
-        let nextPageItems = calculateNextPageItems(startIndex: startIndex)
+        let nextPageItems = dataManager.getNextPageItems(startIndex: startIndex, itemsPerPage: itemsPerPage)
         
         guard !nextPageItems.isEmpty else { return }
-        if indexPath.row == locations.value.count - 1 {
+        
+        // Check if indexPath is provided and if it's the last row
+        if let indexPath = indexPath, indexPath.row == locations.value.count - 1 {
+            locations.send(locations.value + nextPageItems)
+        } else if indexPath == nil {
+            // If indexPath is nil, update locations unconditionally
             locations.send(locations.value + nextPageItems)
         }
     }
@@ -60,29 +68,13 @@ extension ViewModel: PagingProtocol {
 
 // MARK: - Ext Handle response
 private extension ViewModel {
-    func handleResponse(_ response: APIResponse) {
-        let result = response.result.records.compactMap({ convert(location: $0) })
-        locationsStore.append(contentsOf: result)
-    }
-    
     func convert(location: Location) -> LocationVisibleModel {
         let url = networkService.getUrl(string: location.regionalCouncil)
         return LocationVisibleModel(location: location, urlForImage: url)
     }
-}
-
-// MARK: - Ext Pagination
-private extension ViewModel {
-    func getFirstPageItems() -> [LocationVisibleModel] {
-        return Array(
-            locationsStore
-            .dropFirst(locations.value.count)
-            .prefix(itemsPerPage)
-        )
-    }
     
-    func calculateNextPageItems(startIndex: Int) -> [LocationVisibleModel] {
-        let endIndex = min(startIndex + itemsPerPage, locationsStore.count)
-        return Array(locationsStore[startIndex..<endIndex])
+    func handleResponse(_ response: APIResponse) {
+        let result = response.result.records.compactMap({ convert(location: $0) })
+        dataManager.store(result)
     }
 }

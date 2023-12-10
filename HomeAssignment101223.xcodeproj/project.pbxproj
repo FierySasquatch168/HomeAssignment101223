@@ -33,6 +33,8 @@
 		378113932B25E04800D31BC2 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113922B25E04800D31BC2 /* Presentable.swift */; };
 		378113972B25E25400D31BC2 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113962B25E25400D31BC2 /* FlowCoordinator.swift */; };
 		3781139B2B25E29600D31BC2 /* ScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781139A2B25E29600D31BC2 /* ScreenFactory.swift */; };
+		378113A02B25EB1900D31BC2 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3781139F2B25EB1900D31BC2 /* DataStore.swift */; };
+		378113A22B25EC5200D31BC2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113A12B25EC5200D31BC2 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,8 @@
 		378113922B25E04800D31BC2 /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		378113962B25E25400D31BC2 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
 		3781139A2B25E29600D31BC2 /* ScreenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenFactory.swift; sourceTree = "<group>"; };
+		3781139F2B25EB1900D31BC2 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		378113A12B25EC5200D31BC2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,7 @@
 		3781135A2B25BDA500D31BC2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3781139E2B25EB0E00D31BC2 /* DataStore */,
 				378113992B25E28B00D31BC2 /* Factory */,
 				378113982B25E28200D31BC2 /* Network */,
 			);
@@ -286,6 +291,15 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		3781139E2B25EB0E00D31BC2 /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				378113A12B25EC5200D31BC2 /* DataManager.swift */,
+				3781139F2B25EB1900D31BC2 /* DataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -372,8 +386,10 @@
 				378113712B25C22E00D31BC2 /* NetworkManager.swift in Sources */,
 				378113932B25E04800D31BC2 /* Presentable.swift in Sources */,
 				3781138A2B25DC7500D31BC2 /* LocationViewModel.swift in Sources */,
+				378113A22B25EC5200D31BC2 /* DataManager.swift in Sources */,
 				378113912B25E02C00D31BC2 /* Router.swift in Sources */,
 				378113452B25BCED00D31BC2 /* FirstViewController.swift in Sources */,
+				378113A02B25EB1900D31BC2 /* DataStore.swift in Sources */,
 				378113762B25C49800D31BC2 /* ReuseIdentifiable.swift in Sources */,
 				3781139B2B25E29600D31BC2 /* ScreenFactory.swift in Sources */,
 				378113732B25C36500D31BC2 /* CustomTableViewCell.swift in Sources */,

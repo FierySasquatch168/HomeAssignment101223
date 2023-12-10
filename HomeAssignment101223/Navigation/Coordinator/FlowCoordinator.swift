@@ -15,11 +15,14 @@ final class FlowCoordinator: CoordinatorProtocol {
     
     private let router: Routable
     private let screenFactory: ScreenFactoryProtocol
+    private let dataManager: DataManagerProtocol
     
     init(router: Routable,
-         screenFactory: ScreenFactoryProtocol) {
+         screenFactory: ScreenFactoryProtocol,
+         dataManager: DataManagerProtocol) {
         self.router = router
         self.screenFactory = screenFactory
+        self.dataManager = dataManager
     }
     
     func start() {
@@ -30,7 +33,7 @@ final class FlowCoordinator: CoordinatorProtocol {
 private extension FlowCoordinator {
     func showMainScreen() {
         var screen = screenFactory.createFirstScreen()
-        var navController = screenFactory.createNavigationController(root: screen)
+        let navController = screenFactory.createNavigationController(root: screen)
         
         screen.onPush = { [weak self] model in
             self?.showDetailScreen(model: model)
