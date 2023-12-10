@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol DataManagerProtocol {
+    var toggledLike: PassthroughSubject<String, Never> { get }
     func store(_ model: [LocationVisibleModel])
     func getNextPageItems(startIndex: Int, itemsPerPage: Int) -> [LocationVisibleModel]
     func toggleLike(for model: LocationVisibleModel)
@@ -15,7 +17,10 @@ protocol DataManagerProtocol {
 }
 
 final class DataManager {
+    var toggledLike = PassthroughSubject<String, Never>()
+    
     private let dataStore: DataStoreProtocol
+    
     // MARK: Init
     init(dataStore: DataStoreProtocol) {
         self.dataStore = dataStore
@@ -36,6 +41,7 @@ extension DataManager: DataManagerProtocol {
     
     func toggleLike(for model: LocationVisibleModel) {
         dataStore.toggleLike(for: model)
+        toggledLike.send(model.id)
     }
     
     func isLocationLiked(_ model: LocationVisibleModel) -> Bool {

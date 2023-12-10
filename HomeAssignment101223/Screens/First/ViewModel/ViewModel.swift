@@ -19,6 +19,7 @@ protocol PagingProtocol {
 final class ViewModel: ViewModelProtocol {
     var locations = CurrentValueSubject<[LocationVisibleModel], Never>([])
     
+    private lazy var cancellables = Set<AnyCancellable>()
     private lazy var itemsPerPage = 10
     
     private let networkService: LocationManager
@@ -30,6 +31,26 @@ final class ViewModel: ViewModelProtocol {
         self.networkService = networkService
         self.dataManager = dataManager
         getLocations()
+        bindDataManager()
+    }
+}
+
+// MARK: - Ext Bind
+private extension ViewModel {
+    func bindDataManager() {
+        dataManager.toggledLike
+            .sink { [weak self] id in
+                self?.toggleLike(id)
+            }.store(in: &cancellables)
+    }
+    
+    func toggleLike(_ id: String) {
+        var updatedLocations = locations.value
+        
+        if let index = updatedLocations.firstIndex(where: { $0.id == id }) {
+            updatedLocations[index].toggleLike()
+            locations.send(updatedLocations)
+        }
     }
 }
 
@@ -53,16 +74,8 @@ extension ViewModel: PagingProtocol {
     func updateNextPageIfNeeded(forRowAt indexPath: IndexPath?) {
         let startIndex = locations.value.count
         let nextPageItems = dataManager.getNextPageItems(startIndex: startIndex, itemsPerPage: itemsPerPage)
-        
         guard !nextPageItems.isEmpty else { return }
-        
-        // Check if indexPath is provided and if it's the last row
-        if let indexPath = indexPath, indexPath.row == locations.value.count - 1 {
-            locations.send(locations.value + nextPageItems)
-        } else if indexPath == nil {
-            // If indexPath is nil, update locations unconditionally
-            locations.send(locations.value + nextPageItems)
-        }
+        locations.send(locations.value + nextPageItems)
     }
 }
 
