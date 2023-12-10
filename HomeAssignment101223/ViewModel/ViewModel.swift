@@ -28,27 +28,31 @@ final class ViewModel: ViewModelProtocol {
         self.networkService = networkService
         getLocations()
     }
-    
-    private func getLocations() {
+}
+
+// MARK: - Ext Network request
+private extension ViewModel {
+    func getLocations() {
         Task {
             do {
                 let response = try await networkService.getLocations()
                 handleResponse(response)
-                locations.send(getNextPageItems())
+                locations.send(getFirstPageItems())
             } catch {
                 print("error caught: \(error)")
             }
         }
     }
-    
-    
 }
 
 // MARK: - Ext Paging protocol
 extension ViewModel: PagingProtocol {
     func updateNextPageIfNeeded(forRowAt indexPath: IndexPath) {
+        let startIndex = locations.value.count
+        let nextPageItems = calculateNextPageItems(startIndex: startIndex)
+        
+        guard !nextPageItems.isEmpty else { return }
         if indexPath.row == locations.value.count - 1 {
-            let nextPageItems = getNextPageItems()
             locations.send(locations.value + nextPageItems)
         }
     }
@@ -69,11 +73,16 @@ private extension ViewModel {
 
 // MARK: - Ext Pagination
 private extension ViewModel {
-    func getNextPageItems() -> [LocationVisibleModel] {
+    func getFirstPageItems() -> [LocationVisibleModel] {
         return Array(
             locationsStore
             .dropFirst(locations.value.count)
             .prefix(itemsPerPage)
         )
+    }
+    
+    func calculateNextPageItems(startIndex: Int) -> [LocationVisibleModel] {
+        let endIndex = min(startIndex + itemsPerPage, locationsStore.count)
+        return Array(locationsStore[startIndex..<endIndex])
     }
 }
