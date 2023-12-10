@@ -20,13 +20,7 @@ final class CustomTableViewCell: UITableViewCell {
     private lazy var cityNameLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
     private lazy var cityNameInEnglishLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
     private lazy var regionLabel = CustomLabel(textColor: viewModel?.cellState?.stateObject.textColor)
-    
-    private lazy var backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private lazy var backgroundImageView = CustomBackgroundImageView(frame: .zero)
     
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [cityNameLabel, cityNameInEnglishLabel, regionLabel])
@@ -72,9 +66,9 @@ private extension CustomTableViewCell {
 // MARK: - Ext UI State
 private extension CustomTableViewCell {
     func updateColors(cellState: CellStateEnum?) {
-        cityNameLabel.updateColor(new: cellState?.stateObject.textColor)
-        cityNameInEnglishLabel.updateColor(new: cellState?.stateObject.textColor)
-        regionLabel.updateColor(new: cellState?.stateObject.textColor)
+        mainStackView.arrangedSubviews
+            .compactMap({ $0 as? CustomLabel })
+            .forEach({ $0.updateColor(new: cellState?.stateObject.textColor) })
         backgroundColor = cellState?.stateObject.backgroundColor
     }
 }
