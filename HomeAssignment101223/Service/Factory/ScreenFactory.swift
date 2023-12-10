@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol ScreenFactoryProtocol {
     func createNavigationController(root: Presentable) -> UIViewController
     func createFirstScreen() -> Presentable & NavigationProtocol
-//    func createSecondScreen() -> UIViewController
+    func createSecondScreen(model: LocationVisibleModel) -> UIViewController
 }
 
 final class ScreenFactory: ScreenFactoryProtocol {
@@ -26,7 +27,9 @@ final class ScreenFactory: ScreenFactoryProtocol {
         return FirstViewController(viewModel: viewModel)
     }
     
-//    func createSecondScreen() -> UIViewController {
-//
-//    }
+    func createSecondScreen(model: LocationVisibleModel) -> UIViewController {
+        let detailViewModel = LocationViewModel(locationModel: model)
+        let secondView = SecondViewContainer(locationViewModel: .constant(detailViewModel))
+        return UIHostingController(rootView: secondView)
+    }
 }

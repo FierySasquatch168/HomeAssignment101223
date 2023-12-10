@@ -40,8 +40,8 @@ private extension FlowCoordinator {
     }
     
     func showDetailScreen(model: LocationVisibleModel) {
-//        let secondScreen
-//        
-//        router.pushViewController(<#T##viewController: Presentable?##Presentable?#>, animated: <#T##Bool#>)
+        let secondScreen = screenFactory.createSecondScreen(model: model)
+        
+        router.pushViewController(secondScreen, animated: true)
     }
 }
