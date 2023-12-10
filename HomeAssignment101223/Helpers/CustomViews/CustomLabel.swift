@@ -13,6 +13,7 @@ final class CustomLabel: UILabel {
         numberOfLines = 0
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.7
+        textAlignment = .center
     }
     
     required init?(coder: NSCoder) {

@@ -9,7 +9,7 @@ import Foundation
 
 protocol LocationManager {
     func getLocations() async throws -> APIResponse
-    
+    func getUrl(string: String?) -> URL?
 }
 
 final class NetworkManager {
@@ -24,5 +24,9 @@ extension NetworkManager: LocationManager {
     func getLocations() async throws -> APIResponse {
         let request = RequestProvider.locationsRequest(endPoint: .main, httpMethod: .get, dto: nil)
         return try await networkService.sendNetworkRequest(request: request, type: APIResponse.self)
+    }
+    
+    func getUrl(string: String?) -> URL? {
+        return RequestProvider.createUrlFrom(string: string)
     }
 }

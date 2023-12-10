@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 protocol ViewModelProtocol {
-    var locations: CurrentValueSubject<[Location], Never> { get }
+    var locations: CurrentValueSubject<[LocationVisibleModel], Never> { get }
 }
 
 final class ViewModel: ViewModelProtocol {
-    var locations = CurrentValueSubject<[Location], Never>([])
+    var locations = CurrentValueSubject<[LocationVisibleModel], Never>([])
     
     private let networkService: LocationManager
     
@@ -26,11 +26,24 @@ final class ViewModel: ViewModelProtocol {
     func getLocations() {
         Task {
             do {
-                let test = try await networkService.getLocations()
-                locations.send(test.result.records)
+                let response = try await networkService.getLocations()
+                handleResponse(response)
             } catch {
                 print("error caught: \(error)")
             }
         }
+    }
+    
+    private func handleResponse(_ response: APIResponse) {
+        let result = response.result.records.compactMap({ convert(location: $0) })
+        locations.send(result)
+    }
+}
+
+// MARK: - Ext Convert
+private extension ViewModel {
+    func convert(location: Location) -> LocationVisibleModel {
+        let url = networkService.getUrl(string: location.regionalCouncil)
+        return LocationVisibleModel(location: location, urlForImage: url)
     }
 }

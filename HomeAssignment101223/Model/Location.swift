@@ -28,11 +28,3 @@ struct Location: Decodable {
         case regionalCouncil = "Regional_Council_name"
     }
 }
-
-struct LocationVisibleModel {
-    let hebrewName: String
-    let englishName: String
-    let region: String
-    let regionalCouncil: String?
-    let imageURL: URL?
-}

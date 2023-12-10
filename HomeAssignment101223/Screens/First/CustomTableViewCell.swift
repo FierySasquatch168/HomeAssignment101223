@@ -27,6 +27,7 @@ final class CustomTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         setupConstraints()
     }
     
@@ -34,28 +35,35 @@ final class CustomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateCell(location: Location, backgroundImageUrl: URL?) {
+    func updateCell(location: LocationVisibleModel) {
         updateLabels(location: location)
-        updateBackground(backgroundImageUrl: backgroundImageUrl)
+        updateBackground(backgroundImageUrl: location.imageURL)
     }
 }
 
 // MARK: - Ext UI
 private extension CustomTableViewCell {
-    func updateLabels(location: Location) {
+    func updateLabels(location: LocationVisibleModel) {
         cityNameLabel.text = location.hebrewName
         cityNameInEnglishLabel.text = location.englishName
         regionLabel.text = location.region
     }
     
     func updateBackground(backgroundImageUrl: URL?) {
-        backgroundImageView.setImage(from: backgroundImageUrl)
+        DispatchQueue.main.async { [weak self] in
+            self?.backgroundImageView.setImage(from: backgroundImageUrl)
+        }
     }
 }
 
 // MARK: - Ext constraints
 extension CustomTableViewCell {
     func setupConstraints() {
+        setupBackground()
+        setupManStack()
+    }
+    
+    func setupManStack() {
         addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -65,6 +73,12 @@ extension CustomTableViewCell {
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
+    }
+    
+    func setupBackground() {
+        addSubview(backgroundImageView)
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImageView.frame = bounds
     }
 }
 

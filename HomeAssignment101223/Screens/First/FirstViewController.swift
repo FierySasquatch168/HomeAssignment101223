@@ -46,6 +46,7 @@ final class FirstViewController: UIViewController {
 
 }
 
+// MARK: - Ext UITableViewDataSource
 extension FirstViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.locations.value.count
@@ -55,13 +56,16 @@ extension FirstViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseIdentifier,
                                                      for: indexPath) as? CustomTableViewCell
         else { return CustomTableViewCell() }
-        cell.updateCell(location: viewModel.locations.value[indexPath.row], backgroundImageUrl: nil)
+        cell.updateCell(location: viewModel.locations.value[indexPath.row])
         return cell
     }
 }
 
+// MARK: - Ext UITableViewDelegate
 extension FirstViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 250
+    }
 }
 
 // MARK: - Ext Constraints
