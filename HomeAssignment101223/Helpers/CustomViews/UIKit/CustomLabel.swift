@@ -34,7 +34,7 @@ private extension CustomLabel {
 }
 
 // MARK: - Ext Appearence
-private extension CustomLabel {
+extension CustomLabel {
     func updateAppearence(new appearence: LabelAppearence) {
         switch appearence {
         case .black:

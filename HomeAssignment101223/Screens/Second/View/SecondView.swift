@@ -45,11 +45,13 @@ struct SecondView: View {
 }
 
 #Preview {
-    SecondView(viewModel: .init(locationModel: LocationVisibleModel(
-        location: Location(
-            hebrewName: "לא רשום",
-            englishName: "Mock city",
-            region: "לא ידוע",
-            regionalCouncil: nil),
-        urlForImage: nil)))
+    SecondView(
+        viewModel: .init(locationModel: LocationVisibleModel(
+            location: Location(
+                hebrewName: "לא רשום",
+                englishName: "Mock city",
+                region: "לא ידוע",
+                regionalCouncil: nil),
+                urlForImage: nil),
+        dataManager: DataManager(dataStore: DataStore())))
 }

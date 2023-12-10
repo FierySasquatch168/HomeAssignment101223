@@ -17,16 +17,10 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     
     private lazy var cancellables = Set<AnyCancellable>()
     
-    private lazy var tableView: UITableView = {
-       let tableView = UITableView()
-        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        return tableView
-    }()
+    private lazy var tableView = CustomTableView(dataSource: self, delegate: self)
     
     private let viewModel: ViewModelProtocol & PagingProtocol
-    
+    // MARK: Init
     init(viewModel: ViewModelProtocol & PagingProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -36,20 +30,34 @@ final class FirstViewController: UIViewController, NavigationProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
-        bind()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+        tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        cancellables.forEach({ $0.cancel() })
+        cancellables.removeAll()
+    }
+}
 
-    private func bind() {
+// MARK: - Ext Bind
+private extension FirstViewController {
+    func bind() {
         viewModel.locations
             .receive(on: DispatchQueue.main)
             .sink { [weak self] locations in
                 self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
-
 }
 
 // MARK: - Ext UITableViewDataSource

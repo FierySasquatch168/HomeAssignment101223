@@ -8,9 +8,9 @@
 import UIKit
 
 final class CustomTableViewCell: UITableViewCell {
-    private lazy var cityNameLabel = CustomLabel()
-    private lazy var cityNameInEnglishLabel = CustomLabel()
-    private lazy var regionLabel = CustomLabel()
+    private lazy var cityNameLabel = CustomLabel(appearence: .black)
+    private lazy var cityNameInEnglishLabel = CustomLabel(appearence: .black)
+    private lazy var regionLabel = CustomLabel(appearence: .black)
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -38,6 +38,7 @@ final class CustomTableViewCell: UITableViewCell {
     func updateCell(location: LocationVisibleModel) {
         updateLabels(location: location)
         updateBackground(backgroundImageUrl: location.imageURL)
+        updateColors(location: location)
     }
 }
 
@@ -56,35 +57,19 @@ private extension CustomTableViewCell {
     }
     
     func updateColors(location: LocationVisibleModel) {
-        let defaultBackgroundColor: UIColor = .clear
-        let defaultTextColor: UIColor = .black
-        let likedBackgroundColor: UIColor = .systemPink
-        let likedTextColor: UIColor = .systemPink
-        
-        backgroundColor = location.isLiked ? likedBackgroundColor : defaultBackgroundColor
-        
-        updateLabelColors(location.isLiked ? likedTextColor : defaultTextColor)
-        updateLabelBackgroundColors(textColor)
+        updateLabels(model: location)
+        updateBackground(model: location)
     }
     
-    func updateLabelColors(_ textColor: UIColor) {
-        cityNameLabel.textColor = textColor
-        cityNameInEnglishLabel.textColor = textColor
-        regionLabel.textColor = textColor
+    func updateLabels(model: LocationVisibleModel) {
+        let appearence: LabelAppearence = model.isLiked && model.imageURL == nil ? .pink : .black
+        mainStackView.arrangedSubviews
+            .compactMap({ $0 as? CustomLabel})
+            .forEach({ $0.updateAppearence(new: appearence) })
     }
     
-    func updateLabelBackgroundColors(location: LocationVisibleModel, textColor: UIColor) {
-        if let backgroundImageUrl = location?.imageURL {
-            // If there is a background image, set text color to pink
-            cityNameLabel.textColor = textColor
-            cityNameInEnglishLabel.textColor = textColor
-            regionLabel.textColor = textColor
-        } else {
-            // If there is no background image, set background to pink
-            cityNameLabel.backgroundColor = textColor
-            cityNameInEnglishLabel.backgroundColor = textColor
-            regionLabel.backgroundColor = textColor
-        }
+    func updateBackground(model: LocationVisibleModel) {
+        backgroundColor = model.isLiked && model.imageURL == nil ? .systemPink : .clear
     }
 }
 
