@@ -11,7 +11,7 @@ final class CustomTableView: UITableView {
     init(delegate: UITableViewDelegate) {
         super.init(frame: .zero, style: .plain)
         register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
-//        self.dataSource = dataSource
+        backgroundColor = .clear
         self.delegate = delegate
     }
     

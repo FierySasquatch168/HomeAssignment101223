@@ -8,16 +8,9 @@
 import Foundation
 import Combine
 
-protocol ViewModelProtocol {
-    var locations: CurrentValueSubject<[LocationVisibleModel], Never> { get }
-}
-
-protocol PagingProtocol {
-    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath?)
-}
-
-final class ViewModel: ViewModelProtocol {
+final class ViewModel: ViewModelProtocol & LoadingViewModelProtocol {
     var locations = CurrentValueSubject<[LocationVisibleModel], Never>([])
+    var requestResult = CurrentValueSubject<RequestResult?, Never>(nil)
     
     private lazy var cancellables = Set<AnyCancellable>()
     private lazy var itemsPerPage = 10
@@ -59,10 +52,14 @@ private extension ViewModel {
     func getLocations() {
         Task {
             do {
+                requestResult.send(.loading)
                 let response = try await networkService.getLocations()
                 handleResponse(response)
                 updateNextPageIfNeeded(forRowAt: nil)
+                print("request nilled")
+                requestResult.send(nil)
             } catch {
+                // TODO: Show alert
                 print("error caught: \(error)")
             }
         }

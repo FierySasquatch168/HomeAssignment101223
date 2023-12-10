@@ -12,17 +12,18 @@ protocol NavigationProtocol {
     var onPush: ((LocationVisibleModel) -> Void)? { get set }
 }
 
-final class FirstViewController: UIViewController, NavigationProtocol {
+final class FirstViewController: UIViewController, NavigationProtocol, LoadingViewControllerProtocol {
     var onPush: ((LocationVisibleModel) -> Void)?
     
     private lazy var cancellables = Set<AnyCancellable>()
     
     private lazy var tableView = CustomTableView(delegate: self)
+    lazy var loadingView = CustomAnimatedView(frame: .zero)
     
-    private let viewModel: ViewModelProtocol & PagingProtocol
+    private let viewModel: ViewModelProtocol & PagingProtocol & LoadingViewModelProtocol
     private let dataSource: TableDataSourceProtocol
     // MARK: Init
-    init(viewModel: ViewModelProtocol & PagingProtocol,
+    init(viewModel: ViewModelProtocol & PagingProtocol & LoadingViewModelProtocol,
          dataSource: TableDataSourceProtocol) {
         self.viewModel = viewModel
         self.dataSource = dataSource
@@ -36,6 +37,7 @@ final class FirstViewController: UIViewController, NavigationProtocol {
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupConstraints()
         dataSource.createDataSource(for: tableView, with: viewModel.locations.value)
     }
@@ -60,6 +62,13 @@ private extension FirstViewController {
             .sink { [weak self] locations in
                 self?.dataSource.updateTableView(with: locations)
             }.store(in: &cancellables)
+        
+        viewModel.requestResult
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] requestResult in
+                print("result is: \(requestResult)")
+                self?.loadingView.toggleAnimationVisibility(for: requestResult)
+            }.store(in: &cancellables)
     }
 }
 
@@ -82,6 +91,11 @@ extension FirstViewController: UITableViewDelegate {
 // MARK: - Ext Constraints
 private extension FirstViewController {
     func setupConstraints() {
+        setupLoadingView()
+        setupTableView()
+    }
+    
+    func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         

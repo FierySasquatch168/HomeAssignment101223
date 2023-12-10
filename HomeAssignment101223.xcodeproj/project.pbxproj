@@ -11,6 +11,11 @@
 		37284F0D2B26003B00512CAD /* DataSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F0C2B26003B00512CAD /* DataSourceManager.swift */; };
 		37284F0F2B2621A300512CAD /* CellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F0E2B2621A300512CAD /* CellState.swift */; };
 		37284F112B26271A00512CAD /* CustomBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F102B26271A00512CAD /* CustomBackgroundImageView.swift */; };
+		37284F282B2630EB00512CAD /* Ext loadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F272B2630EB00512CAD /* Ext loadingViewController.swift */; };
+		37284F2A2B26310400512CAD /* CustomAnimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F292B26310400512CAD /* CustomAnimatedView.swift */; };
+		37284F2C2B26312100512CAD /* Pose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F2B2B26312100512CAD /* Pose.swift */; };
+		37284F2F2B26314200512CAD /* RequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F2E2B26314200512CAD /* RequestResult.swift */; };
+		37284F322B26323C00512CAD /* FirstViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37284F312B26323C00512CAD /* FirstViewModelProtocol.swift */; };
 		378113412B25BCED00D31BC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113402B25BCED00D31BC2 /* AppDelegate.swift */; };
 		378113432B25BCED00D31BC2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113422B25BCED00D31BC2 /* SceneDelegate.swift */; };
 		378113452B25BCED00D31BC2 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378113442B25BCED00D31BC2 /* FirstViewController.swift */; };
@@ -47,6 +52,11 @@
 		37284F0C2B26003B00512CAD /* DataSourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceManager.swift; sourceTree = "<group>"; };
 		37284F0E2B2621A300512CAD /* CellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellState.swift; sourceTree = "<group>"; };
 		37284F102B26271A00512CAD /* CustomBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackgroundImageView.swift; sourceTree = "<group>"; };
+		37284F272B2630EB00512CAD /* Ext loadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext loadingViewController.swift"; sourceTree = "<group>"; };
+		37284F292B26310400512CAD /* CustomAnimatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimatedView.swift; sourceTree = "<group>"; };
+		37284F2B2B26312100512CAD /* Pose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pose.swift; sourceTree = "<group>"; };
+		37284F2E2B26314200512CAD /* RequestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestResult.swift; sourceTree = "<group>"; };
+		37284F312B26323C00512CAD /* FirstViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewModelProtocol.swift; sourceTree = "<group>"; };
 		3781133D2B25BCED00D31BC2 /* HomeAssignment101223.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeAssignment101223.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		378113402B25BCED00D31BC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		378113422B25BCED00D31BC2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +107,22 @@
 				37284F0C2B26003B00512CAD /* DataSourceManager.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		37284F2D2B26313A00512CAD /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				37284F2E2B26314200512CAD /* RequestResult.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		37284F302B26322C00512CAD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				37284F312B26323C00512CAD /* FirstViewModelProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		378113342B25BCED00D31BC2 = {
@@ -180,6 +206,7 @@
 		378113642B25BF2100D31BC2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				37284F2D2B26313A00512CAD /* Enums */,
 				3781137C2B25C81B00D31BC2 /* CustomViews */,
 				378113742B25C48C00D31BC2 /* Extensions */,
 			);
@@ -192,6 +219,7 @@
 				3781136E2B25C1CC00D31BC2 /* Location.swift */,
 				3781137F2B25CF5E00D31BC2 /* LocationVisibleModel.swift */,
 				37284F0E2B2621A300512CAD /* CellState.swift */,
+				37284F2B2B26312100512CAD /* Pose.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -202,6 +230,7 @@
 				378113752B25C49800D31BC2 /* ReuseIdentifiable.swift */,
 				378113772B25C64F00D31BC2 /* Ext UIIMageView.swift */,
 				378113922B25E04800D31BC2 /* Presentable.swift */,
+				37284F272B2630EB00512CAD /* Ext loadingViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -221,6 +250,7 @@
 				3781137D2B25C82600D31BC2 /* CustomLabel.swift */,
 				378113A52B25F78200D31BC2 /* CustomTableView.swift */,
 				37284F102B26271A00512CAD /* CustomBackgroundImageView.swift */,
+				37284F292B26310400512CAD /* CustomAnimatedView.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -245,6 +275,7 @@
 		378113862B25DC4E00D31BC2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				37284F302B26322C00512CAD /* Protocols */,
 				378113582B25BD9900D31BC2 /* ViewModel.swift */,
 				37284F092B25FD2A00512CAD /* CellViewModel.swift */,
 			);
@@ -406,6 +437,7 @@
 				37284F112B26271A00512CAD /* CustomBackgroundImageView.swift in Sources */,
 				3781138F2B25E00500D31BC2 /* RouterDelegate.swift in Sources */,
 				3781138C2B25DF1B00D31BC2 /* SecondViewContainer.swift in Sources */,
+				37284F282B2630EB00512CAD /* Ext loadingViewController.swift in Sources */,
 				3781135C2B25BDE300D31BC2 /* NetworkService.swift in Sources */,
 				3781136F2B25C1CC00D31BC2 /* Location.swift in Sources */,
 				378113602B25BE2900D31BC2 /* NetworkError.swift in Sources */,
@@ -414,6 +446,8 @@
 				37284F0A2B25FD2A00512CAD /* CellViewModel.swift in Sources */,
 				3781138A2B25DC7500D31BC2 /* LocationViewModel.swift in Sources */,
 				378113A22B25EC5200D31BC2 /* DataManager.swift in Sources */,
+				37284F322B26323C00512CAD /* FirstViewModelProtocol.swift in Sources */,
+				37284F2A2B26310400512CAD /* CustomAnimatedView.swift in Sources */,
 				378113912B25E02C00D31BC2 /* Router.swift in Sources */,
 				378113452B25BCED00D31BC2 /* FirstViewController.swift in Sources */,
 				378113A62B25F78200D31BC2 /* CustomTableView.swift in Sources */,
@@ -422,9 +456,11 @@
 				3781139B2B25E29600D31BC2 /* ScreenFactory.swift in Sources */,
 				378113732B25C36500D31BC2 /* CustomTableViewCell.swift in Sources */,
 				378113972B25E25400D31BC2 /* FlowCoordinator.swift in Sources */,
+				37284F2C2B26312100512CAD /* Pose.swift in Sources */,
 				378113412B25BCED00D31BC2 /* AppDelegate.swift in Sources */,
 				378113592B25BD9900D31BC2 /* ViewModel.swift in Sources */,
 				378113692B25C02700D31BC2 /* RequestProvider.swift in Sources */,
+				37284F2F2B26314200512CAD /* RequestResult.swift in Sources */,
 				3781135E2B25BDFE00D31BC2 /* NetworkRequest.swift in Sources */,
 				378113802B25CF5E00D31BC2 /* LocationVisibleModel.swift in Sources */,
 				378113432B25BCED00D31BC2 /* SceneDelegate.swift in Sources */,
