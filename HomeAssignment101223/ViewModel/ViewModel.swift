@@ -12,38 +12,68 @@ protocol ViewModelProtocol {
     var locations: CurrentValueSubject<[LocationVisibleModel], Never> { get }
 }
 
+protocol PagingProtocol {
+    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath)
+}
+
 final class ViewModel: ViewModelProtocol {
     var locations = CurrentValueSubject<[LocationVisibleModel], Never>([])
     
-    private let networkService: LocationManager
+    private lazy var locationsStore: [LocationVisibleModel] = []
+    private lazy var itemsPerPage = 10
     
+    private let networkService: LocationManager
+    // MARK: Init
     init(networkService: LocationManager) {
         self.networkService = networkService
         getLocations()
-        
     }
     
-    func getLocations() {
+    private func getLocations() {
         Task {
             do {
                 let response = try await networkService.getLocations()
                 handleResponse(response)
+                locations.send(getNextPageItems())
             } catch {
                 print("error caught: \(error)")
             }
         }
     }
     
-    private func handleResponse(_ response: APIResponse) {
-        let result = response.result.records.compactMap({ convert(location: $0) })
-        locations.send(result)
+    
+}
+
+// MARK: - Ext Paging protocol
+extension ViewModel: PagingProtocol {
+    func updateNextPageIfNeeded(forRowAt indexPath: IndexPath) {
+        if indexPath.row == locations.value.count - 1 {
+            let nextPageItems = getNextPageItems()
+            locations.send(locations.value + nextPageItems)
+        }
     }
 }
 
-// MARK: - Ext Convert
+// MARK: - Ext Handle response
 private extension ViewModel {
+    func handleResponse(_ response: APIResponse) {
+        let result = response.result.records.compactMap({ convert(location: $0) })
+        locationsStore.append(contentsOf: result)
+    }
+    
     func convert(location: Location) -> LocationVisibleModel {
         let url = networkService.getUrl(string: location.regionalCouncil)
         return LocationVisibleModel(location: location, urlForImage: url)
+    }
+}
+
+// MARK: - Ext Pagination
+private extension ViewModel {
+    func getNextPageItems() -> [LocationVisibleModel] {
+        return Array(
+            locationsStore
+            .dropFirst(locations.value.count)
+            .prefix(itemsPerPage)
+        )
     }
 }

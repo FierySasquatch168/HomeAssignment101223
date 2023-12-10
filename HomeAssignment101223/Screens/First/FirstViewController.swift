@@ -19,9 +19,9 @@ final class FirstViewController: UIViewController {
         return tableView
     }()
     
-    private let viewModel: ViewModelProtocol
+    private let viewModel: ViewModelProtocol & PagingProtocol
     
-    init(viewModel: ViewModelProtocol) {
+    init(viewModel: ViewModelProtocol & PagingProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -65,6 +65,10 @@ extension FirstViewController: UITableViewDataSource {
 extension FirstViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 250
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        viewModel.updateNextPageIfNeeded(forRowAt: indexPath)
     }
 }
 
