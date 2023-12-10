@@ -8,7 +8,13 @@
 import UIKit
 import Combine
 
-final class FirstViewController: UIViewController {
+protocol NavigationProtocol {
+    var onPush: ((LocationVisibleModel) -> Void)? { get set }
+}
+
+final class FirstViewController: UIViewController, NavigationProtocol {
+    var onPush: ((LocationVisibleModel) -> Void)?
+    
     private lazy var cancellables = Set<AnyCancellable>()
     
     private lazy var tableView: UITableView = {
@@ -69,6 +75,11 @@ extension FirstViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         viewModel.updateNextPageIfNeeded(forRowAt: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedLocation = viewModel.locations.value[indexPath.row]
+        onPush?(selectedLocation)
     }
 }
 

@@ -12,6 +12,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private lazy var screenFactory = ScreenFactory()
+    private lazy var router: Routable = Router(routerDelegate: self)
+    private lazy var flowCoordinator = FlowCoordinator(router: router, screenFactory: screenFactory)
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -20,28 +22,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        
-        window?.rootViewController = screenFactory.createFirstScreen()
         window?.makeKeyAndVisible()
+        flowCoordinator.start()
     }
 }
 
-protocol ScreenFactoryProtocol {
-    func createFirstScreen() -> UIViewController
-//    func createSecondScreen() -> UIViewController
-}
-
-final class ScreenFactory: ScreenFactoryProtocol {
-    func createFirstScreen() -> UIViewController {
-        let networkService = BasicNetworkService()
-        let networkManager = NetworkManager(networkService: networkService)
-        let viewModel = ViewModel(networkService: networkManager)
-        let viewController = FirstViewController(viewModel: viewModel)
-        return UINavigationController(rootViewController: viewController)
+extension SceneDelegate: RouterDelegate {
+    func setupRootViewController(_ viewController: Presentable?) {
+        guard let viewController = viewController?.getVC() else { return }
+        window?.rootViewController = viewController
     }
     
-//    func createSecondScreen() -> UIViewController {
-//        
-//    }
+    func returnRootViewController() -> Presentable? {
+        return window?.rootViewController
+    }
 }
 
