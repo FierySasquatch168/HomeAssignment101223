@@ -9,6 +9,7 @@ import Foundation
 
 final class LocationViewModel: ObservableObject {
     @Published var isLiked = false
+    
     let locationModel: LocationVisibleModel
     let dataManager: DataManagerProtocol
     

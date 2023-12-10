@@ -15,7 +15,7 @@ struct SecondView: View {
             HStack {
                 Text(viewModel.locationModel.hebrewName)
                     .font(.title)
-                Spacer().frame(width: 20)
+//                Spacer().frame(width: 20)
                 Text(viewModel.locationModel.englishName)
                     .font(.title)
             }
@@ -29,15 +29,16 @@ struct SecondView: View {
             Button(action: {
                 viewModel.toggleLike()
             }) {
-                Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                Image(systemName: "heart")
                     .resizable()
                     .frame(width: 250, height: 250)
                     .foregroundColor(.black)
             }
             .padding()
         }
-        .padding([.top, .leading, .trailing], 20)
-        .background(viewModel.isLiked ? Color.pink : Color.red)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(viewModel.isLiked ? Color.pink : Color.clear)     
+        .ignoresSafeArea()
     }
 }
 
