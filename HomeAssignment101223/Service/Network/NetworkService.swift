@@ -25,7 +25,7 @@ struct BasicNetworkService: NetworkServiceProtocol {
         let configuration = URLSessionConfiguration.default
         configuration.waitsForConnectivity = true
         configuration.timeoutIntervalForRequest = 30
-        self.session = URLSession(configuration: .default)
+        self.session = URLSession(configuration: configuration)
         self.decoder = decoder
         self.encoder = encoder
     }

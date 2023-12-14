@@ -56,7 +56,6 @@ private extension ViewModel {
                 let response = try await networkService.getLocations()
                 handleResponse(response)
                 updateNextPageIfNeeded(forRowAt: nil)
-                print("request nilled")
                 requestResult.send(nil)
             } catch {
                 // TODO: Show alert

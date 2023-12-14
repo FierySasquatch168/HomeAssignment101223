@@ -8,7 +8,7 @@
 import Foundation
 
 final class LocationViewModel: ObservableObject {
-    @Published var isLiked = false
+    @Published var isLiked: Bool
     
     let locationModel: LocationVisibleModel
     let dataManager: DataManagerProtocol
@@ -17,7 +17,7 @@ final class LocationViewModel: ObservableObject {
          dataManager: DataManagerProtocol) {
         self.locationModel = locationModel
         self.dataManager = dataManager
-        updateIsLiked()
+        self.isLiked = dataManager.isLocationLiked(locationModel)
     }
     
     func toggleLike() {
@@ -25,7 +25,4 @@ final class LocationViewModel: ObservableObject {
         dataManager.toggleLike(for: locationModel)
     }
     
-    private func updateIsLiked() {
-        isLiked = dataManager.isLocationLiked(locationModel)
-    }
 }

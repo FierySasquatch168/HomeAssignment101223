@@ -66,7 +66,6 @@ private extension FirstViewController {
         viewModel.requestResult
             .receive(on: DispatchQueue.main)
             .sink { [weak self] requestResult in
-                print("result is: \(requestResult)")
                 self?.loadingView.toggleAnimationVisibility(for: requestResult)
             }.store(in: &cancellables)
     }
